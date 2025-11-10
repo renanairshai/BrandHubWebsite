@@ -92,11 +92,13 @@ The content is managed through a Google Sheet with the following columns. **The 
 | `title` | Asset/Item name (clickable text shown to users) | "Main Brand Presentation Template" |
 | `category` | Main category | "Presentations" |
 | `subcategory` | Sub-brand or type | "Lightricks Brand" |
-| `tags` | Comma-separated tags for filtering | "Presentations, Lightricks Brand, Template" |
+| `tags` | **Comma-separated categories for filtering** (powers the filter buttons) | "Lightricks Brand,Presentations" |
 | `link` | **URL to external asset** (Google Drive, Figma, etc.) | "https://drive.google.com/file/d/..." or "https://figma.com/file/..." |
 | `isNew` | **Automatically adds green "NEW" badge** | "TRUE" or "FALSE" |
 | `isFeatured` | Show in "What's New" sidebar | "TRUE" or "FALSE" |
 | `dateAdded` | Date added | "2025-11-10" |
+
+**Important**: The `tags` column is what makes filtering work! Each tag should match one of your filter button names exactly.
 
 ### Supported Link Types
 Each item can link to:
@@ -108,9 +110,19 @@ Each item can link to:
 **Example Data Rows**:
 ```csv
 title,category,subcategory,tags,link,isNew,isFeatured,dateAdded
-Main Brand Presentation,Presentations,Lightricks,"Presentations,Lightricks",https://drive.google.com/file/d/example1,FALSE,TRUE,2025-11-10
-New Q4 Board Deck,Presentations,Lightricks,"Presentations,Board",https://drive.google.com/file/d/example2,TRUE,TRUE,2025-11-08
+Main Brand Presentation,Presentations,Lightricks Brand,"Lightricks Brand,Presentations",https://drive.google.com/file/d/example1,FALSE,TRUE,2025-11-10
+New Q4 Board Deck,Presentations,Lightricks Brand,"Lightricks Brand,Presentations",https://drive.google.com/file/d/example2,TRUE,TRUE,2025-11-08
+Facetune Logo Kit,Logo Kits,Facetune,"Facetune,Logo Kits",https://drive.google.com/file/d/example3,FALSE,FALSE,2025-11-05
+LTX Asset Library,Asset Libraries,LTX,"LTX",https://drive.google.com/folder/d/example4,FALSE,TRUE,2025-10-20
 ```
+
+**How Filtering Works**:
+- Click "Lightricks Brand" → Shows first 2 items (they have "Lightricks Brand" in tags)
+- Click "Presentations" → Shows first 2 items (they have "Presentations" in tags)
+- Click "Facetune" → Shows only the 3rd item
+- Click "Logo Kits" → Shows only the 3rd item (it has "Logo Kits" in tags)
+- Click "LTX" → Shows only the 4th item
+- Click "ALL" → Shows all items organized in accordion sections
 
 **Visual Result**: The second item will display with a green "NEW" badge next to its title automatically!
 
@@ -119,10 +131,16 @@ New Q4 Board Deck,Presentations,Lightricks,"Presentations,Board",https://drive.g
 ## 🎯 Key Features
 
 ### 1. Dynamic Filtering System
-- Filter by sub-brands: Lightricks Brand, LTX, Facetune, etc.
-- Filter by media type: Presentations, Logo Kits, Guidelines, etc.
-- Combination filtering: Show only "Presentations" for "Facetune"
-- "ALL" button to reset filters
+- **Filter Categories**: Each item can belong to multiple categories (e.g., "Lightricks Brand, Presentations")
+- **Smart Display**: When a filter is selected, the Index section is replaced with a focused view showing only matching items
+- **Unified Layout**: Filtered results appear in the same clean, open-accordion style as the Index
+- **Filter Options**:
+  - ALL: Shows complete Index with all accordion categories
+  - Lightricks Brand, LTX, Facetune: Filter by sub-brand
+  - Presentations, Logo Kits, Guidelines: Filter by media type
+  - Legacy brands: Historical brand materials
+- **Visual Feedback**: Active filter button is highlighted
+- **What's New Section**: Automatically hidden when filtering to focus on results
 
 ### 2. Accordion Navigation
 - Expandable/collapsible category sections

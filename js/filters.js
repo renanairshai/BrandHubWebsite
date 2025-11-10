@@ -10,59 +10,164 @@
  * - Handles the "ALL" button to reset filters
  */
 
-// Keep track of currently active filters
-let activeFilters = {
-    subcategory: null,  // e.g., "Lightricks Brand", "LTX", "Facetune"
-    mediaType: null     // e.g., "Presentations", "Logo Kits", "Guidelines"
-};
+console.log('✅ filters.js loaded successfully');
+
+// Keep track of the currently active filter
+let activeFilter = null; // null means "ALL" is active
 
 /**
  * Initializes filter buttons
  * Sets up click handlers for all filter pills
  */
 function initializeFilters() {
-    console.log('Initializing filters...');
-    // TODO: Set up event listeners for filter buttons
+    console.log('🔧 Initializing filters...');
+    
+    const filterButtons = document.querySelectorAll('.filter-button');
+    console.log('🔍 Found filter buttons:', filterButtons.length);
+    
+    if (filterButtons.length === 0) {
+        console.error('❌ No filter buttons found! Check if HTML has .filter-button elements');
+        return;
+    }
+    
+    filterButtons.forEach((button, index) => {
+        const filterValue = button.getAttribute('data-filter');
+        console.log(`  Button ${index + 1}: data-filter="${filterValue}"`);
+        
+        button.addEventListener('click', function() {
+            const clickedFilterValue = this.getAttribute('data-filter');
+            console.log('🖱️ Button clicked!', clickedFilterValue);
+            handleFilterClick(clickedFilterValue);
+        });
+    });
+    
+    console.log(`✅ Initialized ${filterButtons.length} filter buttons`);
 }
 
 /**
  * Handles filter button clicks
- * Updates active filters and re-renders content
+ * Updates active filter and shows/hides appropriate sections
  */
-function handleFilterClick(filterType, filterValue) {
-    // TODO: Implementation coming soon
-    // This will update activeFilters and call renderFilteredContent()
-}
-
-/**
- * Filters data based on active filters
- * Returns only items that match the current filter selection
- */
-function filterData(data) {
-    // If no filters active, return all data
-    if (!activeFilters.subcategory && !activeFilters.mediaType) {
-        return data;
+function handleFilterClick(filterValue) {
+    console.log(`🎯 Filter clicked: ${filterValue}`);
+    
+    // Update active filter
+    if (filterValue === 'all') {
+        console.log('  → Showing ALL (Index section)');
+        activeFilter = null;
+        showIndexSection();
+    } else {
+        console.log(`  → Showing filtered results for: ${filterValue}`);
+        activeFilter = filterValue;
+        showFilteredSection(filterValue);
     }
     
-    // TODO: Filter logic implementation
-    // Return items that match activeFilters
-    return data;
+    // Update button states
+    updateFilterButtonStates(filterValue);
 }
 
 /**
- * Resets all filters (when "ALL" button is clicked)
+ * Shows the Index section (all accordions)
+ * Hides the filtered section
+ * Closes all open accordion sections to reset to original state
+ * Shows What's New section (visible in default view)
  */
-function resetFilters() {
-    activeFilters.subcategory = null;
-    activeFilters.mediaType = null;
-    // TODO: Update UI and re-render all content
+function showIndexSection() {
+    const indexSection = document.getElementById('indexSection');
+    const filteredSection = document.getElementById('filteredSection');
+    const whatsNewSection = document.querySelector('.whats-new-section');
+    
+    if (indexSection) indexSection.style.display = 'block';
+    if (filteredSection) filteredSection.style.display = 'none';
+    if (whatsNewSection) whatsNewSection.style.display = 'block'; // Show What's New in default view
+    
+    // Close all accordion sections to reset to original state
+    const openAccordions = document.querySelectorAll('.accordion-category.open');
+    openAccordions.forEach(accordion => {
+        accordion.classList.remove('open');
+    });
+    
+    console.log('Showing Index section - all accordions closed (original state)');
+}
+
+/**
+ * Shows the filtered section with matching items
+ * Hides the Index section
+ * Hides What's New section to focus on filtered results
+ */
+function showFilteredSection(filterValue) {
+    const indexSection = document.getElementById('indexSection');
+    const filteredSection = document.getElementById('filteredSection');
+    const whatsNewSection = document.querySelector('.whats-new-section');
+    
+    // Hide Index and What's New, show filtered section
+    if (indexSection) indexSection.style.display = 'none';
+    if (filteredSection) filteredSection.style.display = 'block';
+    if (whatsNewSection) whatsNewSection.style.display = 'none'; // Hide What's New when filtering
+    
+    // Get all items with matching categories
+    const allItems = document.querySelectorAll('.index-section .item-link');
+    const matchingItems = [];
+    
+    allItems.forEach(item => {
+        const categories = item.getAttribute('data-categories');
+        if (categories && categories.includes(filterValue)) {
+            matchingItems.push(item);
+        }
+    });
+    
+    console.log(`Found ${matchingItems.length} items for filter: ${filterValue}`);
+    
+    // Render the filtered section
+    renderFilteredSection(filterValue, matchingItems);
+}
+
+/**
+ * Renders the filtered section with a title and matching items
+ */
+function renderFilteredSection(filterTitle, items) {
+    const filteredSection = document.getElementById('filteredSection');
+    
+    if (!filteredSection) return;
+    
+    // Create the HTML structure (looks like an open accordion)
+    let html = `
+        <div class="filtered-section-inner">
+            <h3 class="filtered-section-title">${filterTitle}</h3>
+            <div class="filtered-section-items">
+    `;
+    
+    // Clone each matching item
+    items.forEach(item => {
+        // Clone the item and add it to the filtered section
+        html += item.outerHTML;
+    });
+    
+    html += `
+            </div>
+        </div>
+    `;
+    
+    filteredSection.innerHTML = html;
+    
+    console.log(`Rendered filtered section for: ${filterTitle}`);
 }
 
 /**
  * Updates filter button visual states
- * Shows which filters are currently active
+ * Shows which filter is currently active
  */
-function updateFilterButtonStates() {
-    // TODO: Add/remove 'active' class to buttons based on activeFilters
+function updateFilterButtonStates(activeFilterValue) {
+    const filterButtons = document.querySelectorAll('.filter-button');
+    
+    filterButtons.forEach(button => {
+        const buttonValue = button.getAttribute('data-filter');
+        
+        if (buttonValue === activeFilterValue) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
 }
 

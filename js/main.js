@@ -17,10 +17,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize the application
     initializeDarkMode();      // Set up dark mode toggle
     initializeAccordions();    // Set up accordion click handlers
+    initializeFilters();       // Set up filter button handlers
+    initializeHomeButton();    // Set up H1 header as home button
     
     // TODO: Load data from Google Sheets/CSV and render dynamically
     // For now, the static HTML content will work
 });
+
+/**
+ * Makes the H1 header clickable as a "home" button
+ * Clicking it resets the website to default view (same as "All" filter)
+ */
+function initializeHomeButton() {
+    const header = document.querySelector('h1');
+    
+    if (header) {
+        header.addEventListener('click', function() {
+            console.log('🏠 Home button clicked - resetting to default view');
+            
+            // Reset to "All" filter view
+            if (typeof handleFilterClick === 'function') {
+                handleFilterClick('all');
+            }
+        });
+        
+        console.log('✅ H1 header configured as home button');
+    }
+}
 
 /**
  * Initializes accordion functionality
@@ -38,29 +61,37 @@ function initializeAccordions() {
         });
     });
     
-    // Handle clicks on the entire category section (close when open)
+    // Handle clicks on the entire category section (open when closed, close when open)
     accordionCategories.forEach(category => {
         category.addEventListener('click', function(e) {
-            // Only close if section is open and click wasn't on a link or button
-            if (this.classList.contains('open')) {
-                // Check if the click was on an item link or its children
-                const clickedOnItem = e.target.closest('.item-link');
-                const clickedOnButton = e.target.closest('.item-open-button');
-                const clickedOnHeader = e.target.closest('.accordion-header');
-                
-                // If clicked on item or button, don't close
+            const isOpen = this.classList.contains('open');
+            
+            // Check if the click was on an item link or button (only relevant when open)
+            const clickedOnItem = e.target.closest('.item-link');
+            const clickedOnButton = e.target.closest('.item-open-button');
+            const clickedOnHeader = e.target.closest('.accordion-header');
+            
+            if (isOpen) {
+                // Section is open - close it (unless clicking on items/buttons)
                 if (clickedOnItem || clickedOnButton) {
-                    return;
+                    return; // Let items work normally
                 }
                 
-                // If clicked on header, let the header handler deal with it
                 if (clickedOnHeader) {
-                    return;
+                    return; // Let header handler deal with it
                 }
                 
-                // Otherwise, close the section
+                // Close the section
                 this.classList.remove('open');
                 console.log('Accordion closed by clicking section');
+            } else {
+                // Section is closed - open it on any click
+                if (clickedOnHeader) {
+                    return; // Let header handler deal with it to avoid double-toggle
+                }
+                
+                this.classList.add('open');
+                console.log('Accordion opened by clicking section');
             }
         });
     });

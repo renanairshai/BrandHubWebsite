@@ -68,12 +68,18 @@ body {
 
 /* ===== TYPOGRAPHY ===== */
 
-/* H1 - Logo "Lightricks Brand Hub" */
+/* H1 - Logo "Lightricks Brand Hub" - Functions as home button */
 h1, .h1 {
     font-family: var(--font-primary); /* Aeonik/Inter */
     font-size: var(--font-size-h1);
     font-weight: 400; /* Always same weight */
     line-height: var(--line-height);
+    cursor: pointer; /* Show it's clickable */
+    transition: opacity var(--transition-fast); /* Smooth hover effect */
+}
+
+h1:hover, .h1:hover {
+    opacity: 0.7; /* Subtle hover feedback */
 }
 
 /* H2 - Section Headers (Index, What's New) */
@@ -144,13 +150,8 @@ h3, .h3 {
     gap: var(--spacing-xl);
 }
 
-.index-section {
-    /* Left side - 2/3 width */
-}
-
-.whats-new-section {
-    /* Right side - 1/3 width */
-}
+/* Left side - 2/3 width (index-section) */
+/* Right side - 1/3 width (whats-new-section) */
 
 /* Reduce padding for items in What's New section */
 .whats-new-section .item-link {
@@ -271,7 +272,13 @@ body.dark-mode .dark-mode-toggle-inner {
 .accordion-category {
     margin-bottom: calc(var(--spacing-accordion) * 2); /* Doubled: 60px instead of 30px - more white space between categories */
     border-top: 1px solid var(--border-color);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.6, 1); /* Smoother, more fluid transition */
+    cursor: pointer; /* Entire section clickable when closed */
+}
+
+/* When open, cursor changes to indicate closeable */
+.accordion-category.open {
+    cursor: pointer; /* Already set below, but ensuring consistency */
 }
 
 /* When accordion is CLOSED - header is clickable row */
@@ -280,7 +287,7 @@ body.dark-mode .dark-mode-toggle-inner {
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    padding: 10px 0;
+    padding: 10px 0; /* Back to original tight spacing */
     transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
 }
 
@@ -296,7 +303,7 @@ body.dark-mode .dark-mode-toggle-inner {
 /* When accordion is OPEN - use grid layout for side-by-side */
 .accordion-category.open {
     display: grid;
-    grid-template-columns: auto 1fr; /* Title takes natural width, content takes rest */
+    grid-template-columns: 1fr 2fr; /* Title takes 1/3, items take 2/3 of width */
     gap: var(--spacing-xl); /* Space between title and items */
     align-items: start;
     cursor: pointer; /* Indicate entire section is clickable to close */
@@ -304,7 +311,7 @@ body.dark-mode .dark-mode-toggle-inner {
 
 .accordion-category.open .accordion-header {
     border-top: none; /* Remove border when open, it's on the parent */
-    padding-top: 10px; /* Keep top padding for alignment */
+    padding-top: 10px; /* Keep tight spacing */
 }
 
 .accordion-title {
@@ -315,7 +322,8 @@ body.dark-mode .dark-mode-toggle-inner {
 
 .accordion-arrow {
     font-size: 1rem;
-    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.6, 1), 
+                transform 0.5s cubic-bezier(0.4, 0, 0.6, 1);
     position: relative;
     display: inline-block;
     width: 1.5rem; /* Fixed width to prevent layout shift */
@@ -326,6 +334,7 @@ body.dark-mode .dark-mode-toggle-inner {
 .accordion-category.open .accordion-arrow {
     opacity: 0;
     visibility: hidden;
+    transform: rotate(90deg); /* Subtle rotation as it fades */
 }
 
 /* Close button removed - no longer needed */
@@ -335,8 +344,8 @@ body.dark-mode .dark-mode-toggle-inner {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.3s ease;
+    transition: max-height 0.15s cubic-bezier(0.4, 0, 1, 1), 
+                opacity 0.1s ease;
 }
 
 /* Content column (when open) - appears in second grid column */
@@ -344,8 +353,13 @@ body.dark-mode .dark-mode-toggle-inner {
     max-height: 2000px; /* Large enough for content */
     overflow: visible;
     opacity: 1;
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.4s ease 0.1s; /* Fade in slightly after height starts */
+    transition: max-height 0.5s cubic-bezier(0.2, 0, 0.2, 1), 
+                opacity 0.3s ease 0.1s;
+}
+
+/* Disable item transitions when closing to prevent any movement */
+.accordion-category:not(.open) .item-link {
+    transition: none !important;
 }
 
 /* ===== ITEM LINKS ===== */
@@ -354,7 +368,7 @@ body.dark-mode .dark-mode-toggle-inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-accordion) 0;
+    padding: 10px 0; /* Match section title padding for alignment */
     border-top: 1px solid var(--border-color);
     font-family: var(--font-primary); /* Aeonik/Inter instead of JetBrains Mono */
     font-size: 1.3rem; /* 20.8pt - same as What's New items */
@@ -380,7 +394,7 @@ body.dark-mode .dark-mode-toggle-inner {
 /* Last item doesn't need bottom border - next section's top border serves as divider */
 .accordion-content .item-link:last-child {
     /* No border-bottom - the next accordion section's border-top creates the divider */
-    padding-bottom: var(--spacing-accordion); /* Maintain consistent padding */
+    padding-bottom: 10px; /* Maintain consistent padding with other items */
 }
 
 .item-title {
@@ -435,6 +449,48 @@ body.dark-mode .dark-mode-toggle-inner {
     border-radius: 50px; /* Pill/ellipse shape */
     text-transform: uppercase;
     font-weight: 500;
+}
+
+/* ===== FILTERED RESULTS SECTION ===== */
+/* This section appears when a filter is active, replacing the Index section */
+/* It's styled to look like an open accordion section */
+
+.filtered-section {
+    /* Takes full width of left column (2/3) */
+    grid-column: 1;
+}
+
+.filtered-section-inner {
+    /* Uses same grid layout as open accordion */
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Title takes 1/3, items take 2/3 of width - consistent position */
+    gap: var(--spacing-xl);
+    align-items: start;
+    border-top: 1px solid var(--border-color);
+    /* No padding-top here - title handles its own padding */
+}
+
+.filtered-section-title {
+    /* Same styling and spacing as accordion titles and item-links */
+    font-family: var(--font-primary);
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: var(--line-height);
+    margin: 0;
+    padding: 10px 0; /* Exact match with accordion-header and item-link padding for perfect alignment */
+}
+
+.filtered-section-items {
+    /* Container for the filtered items */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Remove top border from first item - title's border already serves as divider */
+/* Keep same padding as all other items for consistent alignment */
+.filtered-section-items .item-link:first-child {
+    border-top: none;
+    padding: 10px 0; /* Maintain same padding as other items and title */
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
