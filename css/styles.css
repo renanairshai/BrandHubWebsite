@@ -1,0 +1,486 @@
+/**
+ * STYLES.CSS
+ * ==================================================
+ * Main stylesheet for Lightricks Brand Hub
+ * 
+ * This file contains:
+ * - Layout structure
+ * - Component styles (buttons, cards, accordions)
+ * - Typography
+ * - Spacing and grid
+ * - Animations
+ */
+
+/* ===== CSS VARIABLES ===== */
+/* These make it easy to maintain consistent design */
+:root {
+    /* Typography - Font Sizes (converted from design specs to rem) */
+    --font-size-h1: 3.125rem;        /* 50pt - Logo */
+    --font-size-h2: 2.5rem;          /* 40pt - Section headers (Index, What's New) */
+    --font-size-h3: 2.25rem;         /* 36pt - Section titles (Presentations, Asset Libraries) */
+    --font-size-button-lg: 1.5rem;   /* 24pt - Top right buttons */
+    --font-size-item: 1.375rem;      /* 22pt - Items/Links */
+    --font-size-button-sm: 0.875rem; /* 14pt - Filter pills */
+    
+    /* Typography - Other */
+    --line-height: 1.5;              /* 150% */
+    --letter-spacing: 0;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;    /* 8px */
+    --spacing-sm: 1rem;      /* 16px */
+    --spacing-md: 1.5rem;    /* 24px */
+    --spacing-lg: 2rem;      /* 32px */
+    --spacing-xl: 3rem;      /* 48px */
+    --spacing-accordion: 1.875rem; /* 30px - accordion item spacing */
+    
+    /* Button Spacing */
+    --button-padding-y: 0.875rem;    /* 14px - top/bottom */
+    --button-padding-x: 1.125rem;    /* 18px - left/right */
+    --button-gap: 0.625rem;          /* 10px - gap between buttons */
+    
+    /* Border Radius */
+    --radius-button: 50px;           /* 50px - pill shaped buttons */
+    --radius-full: 999px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    
+    /* Layout */
+    --max-width: 1920px;             /* Design canvas width */
+    --content-padding: 4rem;         /* Padding from edges */
+}
+
+/* ===== RESET & BASE STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    line-height: var(--line-height);
+    letter-spacing: var(--letter-spacing);
+    /* Colors set by themes.css */
+}
+
+/* ===== TYPOGRAPHY ===== */
+
+/* H1 - Logo "Lightricks Brand Hub" */
+h1, .h1 {
+    font-family: var(--font-primary); /* Aeonik/Inter */
+    font-size: var(--font-size-h1);
+    font-weight: 400; /* Always same weight */
+    line-height: var(--line-height);
+}
+
+/* H2 - Section Headers (Index, What's New) */
+h2, .h2 {
+    font-family: var(--font-primary); /* Aeonik/Inter */
+    font-size: 2rem; /* 32pt */
+    font-weight: 400;
+    line-height: var(--line-height);
+    padding-bottom: 10px; /* Added spacing below "Index" and "What's New" headers */
+}
+
+/* H3 - Section Titles (Presentations, Asset Libraries, etc.) */
+h3, .h3 {
+    font-family: var(--font-primary); /* Aeonik/Inter */
+    font-size: 2rem; /* 32pt - back to larger size */
+    font-weight: 400;
+    line-height: var(--line-height);
+}
+
+/* Brand Hub title - "Brand Hub" same weight as "Lightricks", with specific color */
+.logo-light {
+    font-weight: 400 !important; /* Force same weight as "Lightricks" always */
+    color: #B2B9CC !important; /* Consistent color in all modes */
+    opacity: 1; /* No opacity, use actual color */
+}
+
+/* ===== LAYOUT STRUCTURE ===== */
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    /* Different padding for top vs sides - top is much tighter */
+    padding: 25px var(--content-padding) var(--content-padding) var(--content-padding);
+    /* Explanation: padding: top right bottom left */
+    /* Top: 25px (moved up from 50px), Sides & Bottom: 4rem (64px) */
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md); /* Space below the divider line */
+    padding-bottom: 10px; /* Space between H1 and divider line */
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* Filter Pills Section */
+.filter-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--button-gap);
+    margin-bottom: calc(var(--spacing-xl) + 40px); /* Much bigger gap below filters */
+    /* This equals: 3rem (48px) + 40px = 88px total space before Index/What's New */
+}
+
+/* Main Content Layout - 2/3 + 1/3 split */
+.main-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-xl);
+}
+
+.index-section {
+    /* Left side - 2/3 width */
+}
+
+.whats-new-section {
+    /* Right side - 1/3 width */
+}
+
+/* Reduce padding for items in What's New section */
+.whats-new-section .item-link {
+    padding: 0.75rem 0; /* Reduced from 30px to 12px top/bottom - tighter spacing */
+    font-size: 1.3rem; /* Slightly larger: 20.8pt */
+    font-family: var(--font-primary); /* Aeonik/Inter instead of JetBrains Mono */
+}
+
+/* What's New items have arrows same as accordion arrows */
+.whats-new-section .item-link .item-arrow {
+    display: inline; /* Make sure arrows are visible */
+    font-size: 1rem; /* Same as accordion arrows - 1rem */
+}
+
+/* Add bottom border to last item in What's New for visual consistency */
+.whats-new-section .item-link:last-child {
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* ===== COMPONENT STYLES ===== */
+
+/* ===== BUTTONS ===== */
+
+/* Base button styles (overrides themes.css with specific values) */
+button,
+.button {
+    font-family: var(--font-primary);
+    padding: var(--button-padding-y) var(--button-padding-x);
+    border-radius: var(--radius-button);
+    border: 1px solid var(--border-color);
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-weight: 400;
+}
+
+button:hover,
+.button:hover {
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-text);
+}
+
+/* Large buttons (Request Form, etc.) */
+.button-large {
+    font-size: var(--font-size-button-lg);
+}
+
+/* Request Form button - styled as underlined text */
+#requestFormBtn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--font-mono); /* JetBrains Mono */
+    font-size: 1em; /* 1em = 16px typically */
+    line-height: 5px;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 5px; /* 5px gap between text and underline */
+    color: var(--text-primary);
+}
+
+#requestFormBtn:hover {
+    background: none;
+    opacity: 0.6; /* Subtle hover effect */
+}
+
+/* Filter pill buttons */
+.filter-button {
+    font-family: var(--font-mono); /* JetBrains Mono */
+    font-size: calc(var(--font-size-button-sm) * 0.9); /* 10% smaller: 0.7875rem */
+    padding: calc(var(--button-padding-y) * 0.9) calc(var(--button-padding-x) * 0.9); /* 10% smaller padding */
+    /* This equals approximately: 12.6px top/bottom, 16.2px left/right */
+}
+
+.filter-button.active {
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-text);
+}
+
+/* Dark mode toggle button */
+.dark-mode-toggle {
+    width: 60px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-color);
+    background-color: transparent;
+    padding: 4px;
+    position: relative;
+    cursor: pointer;
+    transition: none; /* Prevent entire button from animating */
+}
+
+/* Remove hover effect on the toggle button itself */
+.dark-mode-toggle:hover {
+    background-color: transparent;
+    border-color: var(--border-color);
+    color: inherit;
+}
+
+/* The circle/ball that moves */
+.dark-mode-toggle-inner {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--text-primary); /* Always visible - black in light mode, white in dark */
+    transition: transform var(--transition-normal);
+    position: relative;
+}
+
+/* Move the circle when in dark mode */
+body.dark-mode .dark-mode-toggle-inner {
+    transform: translateX(28px);
+}
+
+/* ===== ACCORDION SECTIONS ===== */
+
+.accordion-category {
+    margin-bottom: calc(var(--spacing-accordion) * 2); /* Doubled: 60px instead of 30px - more white space between categories */
+    border-top: 1px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* When accordion is CLOSED - header is clickable row */
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px 0;
+    transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+}
+
+/* Hover state for accordion header */
+.accordion-header:hover {
+    opacity: 0.7;
+}
+
+.accordion-category.open .accordion-header:hover {
+    opacity: 0.7; /* Also apply hover when open */
+}
+
+/* When accordion is OPEN - use grid layout for side-by-side */
+.accordion-category.open {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Title takes natural width, content takes rest */
+    gap: var(--spacing-xl); /* Space between title and items */
+    align-items: start;
+}
+
+.accordion-category.open .accordion-header {
+    border-top: none; /* Remove border when open, it's on the parent */
+    padding-top: 10px; /* Keep top padding for alignment */
+}
+
+.accordion-title {
+    /* Font styles inherited from h3 (now Aeonik, 1.5rem) */
+}
+
+.accordion-arrow {
+    font-size: 1rem;
+    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: inline-block;
+    width: 1.5rem; /* Fixed width to prevent layout shift */
+    text-align: center;
+}
+
+/* Hide original arrow content when open, show X instead */
+.accordion-category.open .accordion-arrow {
+    color: transparent; /* Hide the arrow */
+}
+
+.accordion-category.open .accordion-arrow::before {
+    content: '×'; /* X symbol for close */
+    color: var(--text-primary); /* Restore text color */
+    font-size: 1.5rem; /* Slightly larger X */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    transition: opacity 0.2s ease 0.1s, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+
+/* Animate the X when closing */
+.accordion-arrow::before {
+    content: '';
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Content column (when closed) */
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.3s ease;
+}
+
+/* Content column (when open) - appears in second grid column */
+.accordion-category.open .accordion-content {
+    max-height: 2000px; /* Large enough for content */
+    overflow: visible;
+    opacity: 1;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s ease 0.1s; /* Fade in slightly after height starts */
+}
+
+/* ===== ITEM LINKS ===== */
+
+.item-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-accordion) 0;
+    border-top: 1px solid var(--border-color);
+    font-family: var(--font-primary); /* Aeonik/Inter instead of JetBrains Mono */
+    font-size: 1.3rem; /* 20.8pt - same as What's New items */
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.item-link:hover {
+    color: #B2B9CC; /* Same color as "Brand Hub" text */
+}
+
+.item-link:hover .item-title {
+    color: #B2B9CC; /* Ensure title text also changes color */
+}
+
+/* Keep border on all items when in side-by-side layout */
+.accordion-content .item-link:first-child {
+    border-top: 1px solid var(--border-color); /* Keep border on first item */
+}
+
+/* Last item doesn't need bottom border - next section's top border serves as divider */
+.accordion-content .item-link:last-child {
+    /* No border-bottom - the next accordion section's border-top creates the divider */
+    padding-bottom: var(--spacing-accordion); /* Maintain consistent padding */
+}
+
+.item-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* "Open" button in item links - styled like filter buttons */
+.item-open-button {
+    font-family: var(--font-mono); /* JetBrains Mono like filter buttons */
+    font-size: calc(var(--font-size-button-sm) * 0.9); /* Same as filter buttons */
+    padding: calc(var(--button-padding-y) * 0.45) calc(var(--button-padding-x) * 0.9); /* Half the top/bottom padding */
+    /* Top/Bottom: ~6.3px, Left/Right: ~16.2px */
+    border-radius: var(--radius-button);
+    border: 1px solid var(--border-color);
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.item-open-button:hover {
+    background-color: var(--button-hover-bg); /* Black background */
+    color: var(--button-hover-text); /* Light text */
+}
+
+/* Prevent the button hover from being affected by parent link hover */
+.item-link:hover .item-open-button {
+    color: var(--button-text); /* Keep button text color normal until button itself is hovered */
+}
+
+.item-link:hover .item-open-button:hover {
+    background-color: var(--button-hover-bg); /* Invert when button is hovered */
+    color: var(--button-hover-text);
+}
+
+/* Hide old arrow styling (keep for What's New section) */
+.item-arrow {
+    font-size: 1em;
+}
+
+/* "New" badge - elliptical sticker */
+.badge-new {
+    font-size: 0.7em;
+    padding: 0.3em 0.8em; /* More horizontal padding for ellipse shape */
+    background-color: #B9FF09; /* Bright lime green */
+    color: #000000; /* Black text for contrast */
+    border: none; /* No outline */
+    border-radius: 50px; /* Pill/ellipse shape */
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet */
+@media (max-width: 1200px) {
+    :root {
+        --content-padding: 2rem;
+    }
+    
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    :root {
+        --font-size-h1: 2rem;
+        --font-size-h2: 1.75rem;
+        --font-size-h3: 1.5rem;
+        --font-size-button-lg: 1.125rem;
+        --font-size-item: 1.125rem;
+        --content-padding: 1.5rem;
+    }
+    
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+    
+    .filter-section {
+        gap: var(--spacing-xs);
+    }
+}
+

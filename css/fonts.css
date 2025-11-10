@@ -1,0 +1,36 @@
+/**
+ * FONTS.CSS
+ * ==================================================
+ * This file handles all font loading and declarations
+ * 
+ * Fonts used:
+ * 1. Aeonik - Primary font (custom, loaded from /fonts folder)
+ * 2. Inter - Fallback font if Aeonik isn't loaded (Google Fonts)
+ * 3. JetBrains Mono - Code/monospace font (Google Fonts)
+ */
+
+/* ===== Google Fonts ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+/* ===== Aeonik Font (Custom) ===== */
+/* 
+ * TODO: Add @font-face declarations here once Aeonik font files are added
+ * Example format:
+ * 
+ * @font-face {
+ *     font-family: 'Aeonik';
+ *     src: url('../fonts/aeonik/Aeonik-Regular.woff2') format('woff2'),
+ *          url('../fonts/aeonik/Aeonik-Regular.woff') format('woff');
+ *     font-weight: 400;
+ *     font-style: normal;
+ * }
+ */
+
+/* ===== Font Variables for Easy Use ===== */
+:root {
+    /* Primary font stack: Aeonik (custom) → Inter (Google fallback) → System fonts */
+    --font-primary: 'Aeonik', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+

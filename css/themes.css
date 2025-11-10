@@ -1,0 +1,55 @@
+/**
+ * THEMES.CSS
+ * ==================================================
+ * Color themes for light and dark modes
+ * 
+ * Design specifications:
+ * - Light Mode: #FCFAFA background, black text
+ * - Dark Mode: Inverted colors
+ * - Buttons: 1px black border, rounded, hover inverts colors
+ */
+
+/* ===== LIGHT MODE (Default) ===== */
+body {
+    --bg-primary: #FCFAFA;
+    --bg-secondary: #FFFFFF;
+    --text-primary: #000000;
+    --text-secondary: #666666;
+    --border-color: #000000;
+    --button-bg: #FCFAFA;
+    --button-text: #000000;
+    --button-hover-bg: #000000;
+    --button-hover-text: #FCFAFA;
+    
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ===== DARK MODE ===== */
+/* Applied when user toggles dark mode */
+body.dark-mode {
+    --bg-primary: #000000;
+    --bg-secondary: #1a1a1a;
+    --text-primary: #FCFAFA;
+    --text-secondary: #999999;
+    --border-color: #FCFAFA;
+    --button-bg: #000000;
+    --button-text: #FCFAFA;
+    --button-hover-bg: #FCFAFA;
+    --button-hover-text: #000000;
+}
+
+/* "Brand Hub" color is now consistent across all modes - defined in styles.css */
+
+/* ===== BUTTON COLORS ===== */
+/* 
+ * Button color variables only
+ * Sizing and spacing handled in styles.css
+ * 
+ * Standard button appearance:
+ * - Background color with 1px border
+ * - Rounded corners (50px)
+ * - Inverts on hover
+ */
+
