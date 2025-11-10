@@ -24,15 +24,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /**
  * Initializes accordion functionality
- * Sets up click handlers for accordion headers
+ * Sets up click handlers for accordion headers and sections
  */
 function initializeAccordions() {
     const accordionHeaders = document.querySelectorAll('.accordion-header');
+    const accordionCategories = document.querySelectorAll('.accordion-category');
     
+    // Handle header clicks (open/close toggle)
     accordionHeaders.forEach(header => {
-        header.addEventListener('click', function() {
+        header.addEventListener('click', function(e) {
             const category = this.parentElement;
             toggleAccordion(category);
+        });
+    });
+    
+    // Handle clicks on the entire category section (close when open)
+    accordionCategories.forEach(category => {
+        category.addEventListener('click', function(e) {
+            // Only close if section is open and click wasn't on a link or button
+            if (this.classList.contains('open')) {
+                // Check if the click was on an item link or its children
+                const clickedOnItem = e.target.closest('.item-link');
+                const clickedOnButton = e.target.closest('.item-open-button');
+                const clickedOnHeader = e.target.closest('.accordion-header');
+                
+                // If clicked on item or button, don't close
+                if (clickedOnItem || clickedOnButton) {
+                    return;
+                }
+                
+                // If clicked on header, let the header handler deal with it
+                if (clickedOnHeader) {
+                    return;
+                }
+                
+                // Otherwise, close the section
+                this.classList.remove('open');
+                console.log('Accordion closed by clicking section');
+            }
         });
     });
     

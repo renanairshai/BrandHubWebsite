@@ -79,16 +79,17 @@ h1, .h1 {
 /* H2 - Section Headers (Index, What's New) */
 h2, .h2 {
     font-family: var(--font-primary); /* Aeonik/Inter */
-    font-size: 2rem; /* 32pt */
-    font-weight: 400;
+    font-size: 1.3rem; /* 20.8pt - same as items */
+    font-weight: 600; /* Semi-bold weight */
     line-height: var(--line-height);
+    letter-spacing: 0.03em; /* 3% more spacing between letters */
     padding-bottom: 10px; /* Added spacing below "Index" and "What's New" headers */
 }
 
 /* H3 - Section Titles (Presentations, Asset Libraries, etc.) */
 h3, .h3 {
     font-family: var(--font-primary); /* Aeonik/Inter */
-    font-size: 2rem; /* 32pt - back to larger size */
+    font-size: 1.3rem; /* 20.8pt - same as items */
     font-weight: 400;
     line-height: var(--line-height);
 }
@@ -117,7 +118,7 @@ h3, .h3 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--spacing-md); /* Space below the divider line */
-    padding-bottom: 10px; /* Space between H1 and divider line */
+    padding-bottom: 5px; /* Reduced space between H1 and divider line */
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -132,8 +133,8 @@ h3, .h3 {
     display: flex;
     flex-wrap: wrap;
     gap: var(--button-gap);
-    margin-bottom: calc(var(--spacing-xl) + 40px); /* Much bigger gap below filters */
-    /* This equals: 3rem (48px) + 40px = 88px total space before Index/What's New */
+    margin-bottom: calc(var(--spacing-xl) + 105px); /* Increased gap below filters */
+    /* This equals: 3rem (48px) + 105px = 153px total space before sections */
 }
 
 /* Main Content Layout - 2/3 + 1/3 split */
@@ -298,6 +299,7 @@ body.dark-mode .dark-mode-toggle-inner {
     grid-template-columns: auto 1fr; /* Title takes natural width, content takes rest */
     gap: var(--spacing-xl); /* Space between title and items */
     align-items: start;
+    cursor: pointer; /* Indicate entire section is clickable to close */
 }
 
 .accordion-category.open .accordion-header {
@@ -307,6 +309,8 @@ body.dark-mode .dark-mode-toggle-inner {
 
 .accordion-title {
     /* Font styles inherited from h3 (now Aeonik, 1.5rem) */
+    margin: 0;
+    padding: 0;
 }
 
 .accordion-arrow {
@@ -318,30 +322,13 @@ body.dark-mode .dark-mode-toggle-inner {
     text-align: center;
 }
 
-/* Hide original arrow content when open, show X instead */
+/* Hide arrow when open */
 .accordion-category.open .accordion-arrow {
-    color: transparent; /* Hide the arrow */
-}
-
-.accordion-category.open .accordion-arrow::before {
-    content: '×'; /* X symbol for close */
-    color: var(--text-primary); /* Restore text color */
-    font-size: 1.5rem; /* Slightly larger X */
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-    transition: opacity 0.2s ease 0.1s, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
-}
-
-/* Animate the X when closing */
-.accordion-arrow::before {
-    content: '';
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
-    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
 }
+
+/* Close button removed - no longer needed */
 
 /* Content column (when closed) */
 .accordion-content {
@@ -374,6 +361,7 @@ body.dark-mode .dark-mode-toggle-inner {
     color: var(--text-primary);
     text-decoration: none;
     transition: color var(--transition-fast);
+    cursor: pointer; /* Explicit pointer cursor for links */
 }
 
 .item-link:hover {
@@ -384,9 +372,9 @@ body.dark-mode .dark-mode-toggle-inner {
     color: #B2B9CC; /* Ensure title text also changes color */
 }
 
-/* Keep border on all items when in side-by-side layout */
+/* Remove border from first item - section's top border already serves as divider */
 .accordion-content .item-link:first-child {
-    border-top: 1px solid var(--border-color); /* Keep border on first item */
+    border-top: none;
 }
 
 /* Last item doesn't need bottom border - next section's top border serves as divider */
