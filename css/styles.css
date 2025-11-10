@@ -239,10 +239,12 @@ button:hover,
     border-radius: var(--radius-full);
     border: 1px solid var(--border-color);
     background-color: transparent;
-    padding: 4px;
+    padding: 0; /* Remove padding to manually center the circle */
     position: relative;
     cursor: pointer;
     transition: none; /* Prevent entire button from animating */
+    display: flex;
+    align-items: center; /* Center circle vertically */
 }
 
 /* Remove hover effect on the toggle button itself */
@@ -257,9 +259,10 @@ button:hover,
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background-color: var(--text-primary); /* Always visible - black in light mode, white in dark */
+    background-color: var(--text-primary); /* Black in light mode, white in dark mode */
     transition: transform var(--transition-normal);
-    position: relative;
+    position: absolute;
+    left: 4px; /* Start position with 4px margin */
 }
 
 /* Move the circle when in dark mode */
