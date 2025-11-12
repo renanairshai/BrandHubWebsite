@@ -12,10 +12,12 @@ The website features:
 
 - **Link-Based Repository**: Every item is a link to external resources (Google Drive, Figma, etc.)
 - **No File Hosting**: The website is purely a directory/index - all assets remain in their original locations
-- **Dynamic Content Management**: All items and categories are managed through Google Sheets/CSV files
-- **Smart Filtering**: Filter assets by sub-brands and media types
-- **Highlights Section**: Showcase frequently requested or newly added materials
+- **Fully Dynamic System**: Filter buttons and accordion sections auto-generate from Google Sheet data
+- **Smart Filtering**: Filter by brands, categories, and tags - items can appear in multiple filters
+- **Easy Access Sidebar**: Showcase frequently requested or newly added materials
 - **Dark Mode**: Toggle between light and dark themes
+- **Responsive Design**: Section titles appear when layout stacks (tablet/mobile)
+- **Professional Branding**: Lightricks favicon appears in browser tabs
 - **Request System**: Direct link to request form for brand team
 
 ---
@@ -61,22 +63,27 @@ The Brand Hub is a **link directory**, not a file repository. When users click o
 ```
 BrandHubWebsite/
 ├── README.md                 # This file - project documentation
-├── index.html                # Main HTML structure
+├── GOOGLE_SHEETS_SETUP.md   # Complete Google Sheets setup guide
+├── TESTING_GUIDE.md         # Step-by-step testing instructions
+├── index.html               # Main HTML structure
+├── favicon.svg              # Lightricks logo favicon
 ├── css/
-│   ├── styles.css           # Main stylesheet
-│   ├── themes.css           # Light/Dark mode themes
-│   └── fonts.css            # Font declarations
+│   ├── styles.css          # Main stylesheet
+│   ├── themes.css          # Light/Dark mode themes
+│   └── fonts.css           # Font declarations
 ├── js/
-│   ├── main.js              # Core functionality
-│   ├── dataLoader.js        # Google Sheets/CSV integration
-│   ├── filters.js           # Category and tag filtering logic
-│   └── darkMode.js          # Theme toggle functionality
+│   ├── config.js           # Configuration (Google Sheets URL)
+│   ├── main.js             # Core functionality
+│   ├── dataLoader.js       # Google Sheets/CSV integration & data parsing
+│   ├── renderer.js         # Dynamic UI generation
+│   ├── filters.js          # Category and tag filtering logic
+│   └── darkMode.js         # Theme toggle functionality
 ├── fonts/
-│   └── aeonik/              # Aeonik font files
+│   └── aeonik/             # Aeonik font files
 ├── data/
-│   └── sample-data.csv      # Sample data structure
+│   └── sample-data.csv     # Sample data structure
 └── assets/
-    └── icons/               # UI icons (if needed)
+    └── icons/              # UI icons (if needed)
 ```
 
 ---
@@ -182,12 +189,14 @@ Training Video,https://drive.google.com/file/d/example5,Lightricks Brand,Templat
 - Each link opens the asset in a new tab (Google Drive, Figma, etc.)
 - Clean, organized presentation
 
-### 3. Highlights Section
-- Curated list of featured items (also clickable links)
+### 3. Easy Access Section (Highlights)
+- **Display Name:** "Easy Access" (internal code name: "Highlights")
+- Curated sidebar of featured items (also clickable links)
 - Automatically displays items marked with "Highlight = Yes" in the Google Sheet
 - Quick access to most frequently requested assets OR newly added items
 - Can feature items with or without the "NEW" badge
 - Easy to update priority items
+- **Responsive:** Section title appears when layout stacks (tablet/mobile)
 
 ### 4. Automatic "New" Badge
 - Set `isNew` to "TRUE" in the CSV/Google Sheet
@@ -292,33 +301,37 @@ This project is designed to be easy to maintain without deep coding knowledge:
 1. Upload or locate your file in Google Drive, Figma, etc.
 2. Copy the shareable link (make sure it's accessible to your team)
 3. Open your Google Sheet
-4. Add a new row with:
-   - **title**: What users will see (e.g., "Q4 Brand Presentation")
-   - **category**: Type of asset (e.g., "Presentations")
-   - **subcategory**: Sub-brand or type (e.g., "Lightricks Brand")
-   - **tags**: Comma-separated for filtering (e.g., "Presentations,Lightricks Brand")
-   - **link**: The URL you copied
-   - **isNew**: Set to "TRUE" to display the green "NEW" badge (or "FALSE" if not new)
-   - **Highlight**: Set to "Yes" to show in "Highlights" sidebar (or "No")
-   - **dateAdded**: Date in YYYY-MM-DD format (e.g., "2025-11-10")
-5. Save - the website updates automatically (refresh to see changes)
+4. Add a new row with these columns:
+   - **Item Name**: What users will see (e.g., "Q4 Brand Presentation")
+   - **URL**: The link you copied
+   - **Brand**: Sub-brand (e.g., "Lightricks Brand", "Facetune", "LTX")
+   - **Category**: Type of asset (e.g., "Presentations", "Assets", "Guidelines")
+   - **Tags**: Additional keywords, comma-separated (e.g., "Resources, Tools")
+   - **Highlight**: "Yes" to show in Easy Access sidebar, or "No"
+   - **Is New**: "Yes" to display the green "NEW" badge, or "No"
+5. **IMPORTANT:** After editing, go to **File → Share → Publish to web → Republish**
+6. Wait 20 seconds, then refresh your website to see changes
 
-**Pro Tip**: Set both `isNew` and `isFeatured` to "TRUE" for maximum visibility of new assets!
+**Pro Tip**: Set both `Highlight = Yes` and `Is New = Yes` for maximum visibility of new assets!
 
 ### To Update or Remove Items:
 1. Open your Google Sheet
 2. Edit or delete rows as needed
-3. The website updates automatically (may need page refresh)
+3. **Republish:** File → Share → Publish to web → Republish
+4. Wait 20 seconds, then refresh website to see changes
+
+**Note:** Google Sheets published data updates every ~5 minutes automatically, but republishing makes changes appear instantly!
 
 ### To Change Categories:
 - Just use new category names in your Google Sheet
 - The filter buttons update automatically
 
-### To Feature an Item in "Highlights":
+### To Feature an Item in "Easy Access" Sidebar:
 - Set the `Highlight` column to `Yes` in your Google Sheet
 
 ### To Mark Something as New:
-- Set the `isNew` column to `TRUE` in your Google Sheet
+- Set the `Is New` column to `Yes` in your Google Sheet
+- The green "NEW" badge will appear automatically
 
 ### Important Notes:
 - **Every item must have a valid link** - without it, users can't access the asset
