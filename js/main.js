@@ -11,17 +11,20 @@
  */
 
 // Wait for the page to fully load before running any code
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Lightricks Brand Hub initialized');
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🚀 Lightricks Brand Hub initialized');
     
-    // Initialize the application
-    initializeDarkMode();      // Set up dark mode toggle
-    initializeAccordions();    // Set up accordion click handlers
-    initializeFilters();       // Set up filter button handlers
-    initializeHomeButton();    // Set up H1 header as home button
+    // Initialize dark mode first (doesn't depend on data)
+    initializeDarkMode();
     
-    // TODO: Load data from Google Sheets/CSV and render dynamically
-    // For now, the static HTML content will work
+    // Load data and render all dynamic content
+    // This will create filter buttons, accordion sections, and What's New items
+    await renderAllSections();
+    
+    // Set up H1 header as home button
+    initializeHomeButton();
+    
+    console.log('✅ Brand Hub ready!');
 });
 
 /**
@@ -121,11 +124,11 @@ function renderRepository(data) {
 }
 
 /**
- * Renders the "What's New" sidebar
+ * Renders the "Highlights" sidebar
  * Shows featured items and recently added materials
  */
-function renderWhatsNew(data) {
-    // TODO: Implementation coming soon
+function renderHighlight(data) {
+    // TODO: Implementation coming soon (or handled by renderer.js)
     // This will dynamically generate featured items from Google Sheets data
 }
 
@@ -151,11 +154,11 @@ function createItemHTML(item) {
 }
 
 /**
- * Helper function to create a "What's New" item link with optional "New" badge
+ * Helper function to create a "Highlight" item link with optional "New" badge
  * @param {Object} item - Item data from CSV
  * @returns {string} HTML string for the item link with arrow
  */
-function createWhatsNewItemHTML(item) {
+function createHighlightItemHTML(item) {
     const newBadge = (item.isNew === true || item.isNew === 'TRUE') 
         ? '<span class="badge-new">New</span>' 
         : '';

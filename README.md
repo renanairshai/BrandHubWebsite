@@ -14,7 +14,7 @@ The website features:
 - **No File Hosting**: The website is purely a directory/index - all assets remain in their original locations
 - **Dynamic Content Management**: All items and categories are managed through Google Sheets/CSV files
 - **Smart Filtering**: Filter assets by sub-brands and media types
-- **What's New Section**: Highlight frequently requested or newly added materials
+- **Highlights Section**: Showcase frequently requested or newly added materials
 - **Dark Mode**: Toggle between light and dark themes
 - **Request System**: Direct link to request form for brand team
 
@@ -36,7 +36,7 @@ The website features:
 
 ### Layout Structure
 - **Main Content**: 2/3 width - Repository/Index of all assets
-- **Sidebar**: 1/3 width - "What's New" / "Easy Access"
+- **Sidebar**: 1/3 width - "Highlights" / "Easy Access"
 - **Top Navigation**: Filter pills and action buttons (Dark Mode toggle, Request Form)
 
 ---
@@ -85,20 +85,37 @@ BrandHubWebsite/
 
 ### Google Sheet / CSV Format
 
-The content is managed through a Google Sheet with the following columns. **The `link` column is crucial** - it contains the URL that opens when users click the item.
+The content is managed through a Google Sheet with the following columns. **The system is fully dynamic** - filter buttons and accordion sections are automatically generated from your data!
 
-| Column | Description | Example |
-|--------|-------------|---------|
-| `title` | Asset/Item name (clickable text shown to users) | "Main Brand Presentation Template" |
-| `category` | Main category | "Presentations" |
-| `subcategory` | Sub-brand or type | "Lightricks Brand" |
-| `tags` | **Comma-separated categories for filtering** (powers the filter buttons) | "Lightricks Brand,Presentations" |
-| `link` | **URL to external asset** (Google Drive, Figma, etc.) | "https://drive.google.com/file/d/..." or "https://figma.com/file/..." |
-| `isNew` | **Automatically adds green "NEW" badge** | "TRUE" or "FALSE" |
-| `isFeatured` | Show in "What's New" sidebar | "TRUE" or "FALSE" |
-| `dateAdded` | Date added | "2025-11-10" |
+| Column | Description | Creates Filter? | Creates Accordion? | Example |
+|--------|-------------|-----------------|-------------------|---------|
+| `Item Name` | Asset/Item name (clickable text shown to users) | ❌ No | ❌ No | "Main Brand Presentation Template" |
+| `URL` | **URL to external asset** (Google Drive, Figma, etc.) | ❌ No | ❌ No | "https://drive.google.com/file/d/..." |
+| `Brand` | Sub-brand (single value) | ✅ Yes | ❌ No | "Lightricks Brand", "Facetune", "LTX" |
+| `Category` | Type of asset (single value) | ✅ Yes | ✅ YES | "Presentations", "Assets", "Guidelines" |
+| `Tags` | Additional keywords (comma-separated) | ✅ Yes | ❌ No | "Resources, Tools, Logo Kits" |
+| `Highlight` | Show in Highlights sidebar? | ❌ No | ❌ No | "Yes" or "No" |
+| `Is New` | **Automatically adds green "NEW" badge** | ❌ No | ❌ No | "Yes" or "No" |
 
-**Important**: The `tags` column is what makes filtering work! Each tag should match one of your filter button names exactly.
+### 🎯 The 3-Tier System Explained
+
+This structure creates a smart, hierarchical organization:
+
+1. **Brand** - Which sub-brand does this belong to?
+   - Examples: Lightricks Brand, Facetune, LTX, Legacy Brands
+   - Creates filter buttons automatically
+
+2. **Category** - What TYPE of asset is this? (Main filing system)
+   - Examples: Presentations, Assets, Guidelines, Templates
+   - Creates BOTH filter buttons AND accordion sections
+   - This is the primary organization structure
+
+3. **Tags** - Additional keywords for flexible cross-filtering
+   - Examples: Resources, Tools, Videos, Training, Logo Kits
+   - Creates filter buttons automatically
+   - Can have multiple per item (comma-separated)
+
+**The Magic**: Add a new Brand, Category, or Tag to your Google Sheet → Filter buttons automatically appear! No code changes needed.
 
 ### Supported Link Types
 Each item can link to:
@@ -109,22 +126,38 @@ Each item can link to:
 
 **Example Data Rows**:
 ```csv
-title,category,subcategory,tags,link,isNew,isFeatured,dateAdded
-Main Brand Presentation,Presentations,Lightricks Brand,"Lightricks Brand,Presentations",https://drive.google.com/file/d/example1,FALSE,TRUE,2025-11-10
-New Q4 Board Deck,Presentations,Lightricks Brand,"Lightricks Brand,Presentations",https://drive.google.com/file/d/example2,TRUE,TRUE,2025-11-08
-Facetune Logo Kit,Logo Kits,Facetune,"Facetune,Logo Kits",https://drive.google.com/file/d/example3,FALSE,FALSE,2025-11-05
-LTX Asset Library,Asset Libraries,LTX,"LTX",https://drive.google.com/folder/d/example4,FALSE,TRUE,2025-10-20
+Item Name,URL,Brand,Category,Tags,Highlight,Is New
+Main Brand Presentation,https://drive.google.com/file/d/example1,Lightricks Brand,Presentations,Resources,Yes,No
+Q4 Board Deck,https://drive.google.com/file/d/example2,Lightricks Brand,Presentations,"Resources, Tools",Yes,Yes
+Facetune Logo Kit,https://drive.google.com/file/d/example3,Facetune,Assets,"Logo Kits, Resources",Yes,No
+LTX Guidelines,https://drive.google.com/file/d/example4,LTX,Guidelines,,No,No
+Training Video,https://drive.google.com/file/d/example5,Lightricks Brand,Templates,"Videos, Training",Yes,Yes
 ```
 
-**How Filtering Works**:
-- Click "Lightricks Brand" → Shows first 2 items (they have "Lightricks Brand" in tags)
-- Click "Presentations" → Shows first 2 items (they have "Presentations" in tags)
-- Click "Facetune" → Shows only the 3rd item
-- Click "Logo Kits" → Shows only the 3rd item (it has "Logo Kits" in tags)
-- Click "LTX" → Shows only the 4th item
-- Click "ALL" → Shows all items organized in accordion sections
+**What Happens Automatically**:
 
-**Visual Result**: The second item will display with a green "NEW" badge next to its title automatically!
+1. **Filter Buttons Created** (in this order):
+   ```
+   [All] [Facetune] [Lightricks Brand] [LTX] [Assets] [Guidelines] [Presentations] [Templates] [Logo Kits] [Resources] [Tools] [Training] [Videos]
+    ↑         Brands (alphabetical)            Categories (alphabetical)                    Tags (alphabetical)
+   Fixed
+   ```
+
+2. **Accordion Sections Created** (from Categories):
+   - 📁 Assets → Facetune Logo Kit
+   - 📁 Guidelines → LTX Guidelines
+   - 📁 Presentations → Main Brand Presentation, Q4 Board Deck
+   - 📁 Templates → Training Video
+
+3. **Filtering Examples**:
+   - Click "Facetune" → Shows Facetune Logo Kit
+   - Click "Presentations" → Shows Main Brand Presentation + Q4 Board Deck
+   - Click "Resources" → Shows items with "Resources" tag (first 3 items)
+   - Click "ALL" → Shows all items organized in accordion sections
+
+4. **Visual Badges**:
+   - Q4 Board Deck shows with green "NEW" badge (Is New = Yes)
+   - Training Video shows with green "NEW" badge (Is New = Yes)
 
 ---
 
@@ -140,7 +173,7 @@ LTX Asset Library,Asset Libraries,LTX,"LTX",https://drive.google.com/folder/d/ex
   - Presentations, Logo Kits, Guidelines: Filter by media type
   - Legacy brands: Historical brand materials
 - **Visual Feedback**: Active filter button is highlighted
-- **What's New Section**: Automatically hidden when filtering to focus on results
+- **Highlights Section**: Automatically hidden when filtering to focus on results
 
 ### 2. Accordion Navigation
 - Expandable/collapsible category sections
@@ -149,16 +182,17 @@ LTX Asset Library,Asset Libraries,LTX,"LTX",https://drive.google.com/folder/d/ex
 - Each link opens the asset in a new tab (Google Drive, Figma, etc.)
 - Clean, organized presentation
 
-### 3. What's New Section
+### 3. Highlights Section
 - Curated list of featured items (also clickable links)
-- Automatically displays items marked as "Featured" in the CSV
-- Quick access to most frequently requested assets
+- Automatically displays items marked with "Highlight = Yes" in the Google Sheet
+- Quick access to most frequently requested assets OR newly added items
+- Can feature items with or without the "NEW" badge
 - Easy to update priority items
 
 ### 4. Automatic "New" Badge
 - Set `isNew` to "TRUE" in the CSV/Google Sheet
 - Website automatically displays a bright lime green "NEW" badge
-- Works in both Index and What's New sections
+- Works in both Index accordion sections and Highlights sidebar
 - No manual HTML editing required - just update the spreadsheet!
 
 ### 5. Dark Mode Toggle
@@ -265,7 +299,7 @@ This project is designed to be easy to maintain without deep coding knowledge:
    - **tags**: Comma-separated for filtering (e.g., "Presentations,Lightricks Brand")
    - **link**: The URL you copied
    - **isNew**: Set to "TRUE" to display the green "NEW" badge (or "FALSE" if not new)
-   - **isFeatured**: Set to "TRUE" to show in "What's New" sidebar (or "FALSE")
+   - **Highlight**: Set to "Yes" to show in "Highlights" sidebar (or "No")
    - **dateAdded**: Date in YYYY-MM-DD format (e.g., "2025-11-10")
 5. Save - the website updates automatically (refresh to see changes)
 
@@ -280,8 +314,8 @@ This project is designed to be easy to maintain without deep coding knowledge:
 - Just use new category names in your Google Sheet
 - The filter buttons update automatically
 
-### To Feature an Item in "What's New":
-- Set the `isFeatured` column to `TRUE` in your Google Sheet
+### To Feature an Item in "Highlights":
+- Set the `Highlight` column to `Yes` in your Google Sheet
 
 ### To Mark Something as New:
 - Set the `isNew` column to `TRUE` in your Google Sheet

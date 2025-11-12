@@ -70,16 +70,16 @@ function handleFilterClick(filterValue) {
  * Shows the Index section (all accordions)
  * Hides the filtered section
  * Closes all open accordion sections to reset to original state
- * Shows What's New section (visible in default view)
+ * Shows Highlights section (visible in default view)
  */
 function showIndexSection() {
     const indexSection = document.getElementById('indexSection');
     const filteredSection = document.getElementById('filteredSection');
-    const whatsNewSection = document.querySelector('.whats-new-section');
+    const highlightSection = document.querySelector('.highlight-section');
     
     if (indexSection) indexSection.style.display = 'block';
     if (filteredSection) filteredSection.style.display = 'none';
-    if (whatsNewSection) whatsNewSection.style.display = 'block'; // Show What's New in default view
+    if (highlightSection) highlightSection.style.display = 'block'; // Show Highlights in default view
     
     // Close all accordion sections to reset to original state
     const openAccordions = document.querySelectorAll('.accordion-category.open');
@@ -93,24 +93,46 @@ function showIndexSection() {
 /**
  * Shows the filtered section with matching items
  * Hides the Index section
- * Hides What's New section to focus on filtered results
+ * Hides Highlights section to focus on filtered results
+ * ==================================================
+ * This is where the magic happens! When a user clicks a filter button,
+ * this function finds all items that match and displays them.
+ * 
+ * HOW MATCHING WORKS:
+ * Each item has a data-categories attribute that contains:
+ * - Its Brand (e.g., "Lightricks Brand")
+ * - Its Category (e.g., "Presentations")
+ * - All its Tags (e.g., "Resources, Tools")
+ * 
+ * When filtering by "Facetune", it shows items where data-categories includes "Facetune"
+ * When filtering by "Presentations", it shows items where data-categories includes "Presentations"
+ * And so on!
+ * 
+ * @param {string} filterValue - The filter to apply (e.g., "Facetune", "Presentations")
  */
 function showFilteredSection(filterValue) {
     const indexSection = document.getElementById('indexSection');
     const filteredSection = document.getElementById('filteredSection');
-    const whatsNewSection = document.querySelector('.whats-new-section');
+    const highlightSection = document.querySelector('.highlight-section');
     
-    // Hide Index and What's New, show filtered section
+    // STEP 1: Hide Index and Highlights, show filtered section
     if (indexSection) indexSection.style.display = 'none';
     if (filteredSection) filteredSection.style.display = 'block';
-    if (whatsNewSection) whatsNewSection.style.display = 'none'; // Hide What's New when filtering
+    if (highlightSection) highlightSection.style.display = 'none';
     
-    // Get all items with matching categories
+    // STEP 2: Find all items in the index section
     const allItems = document.querySelectorAll('.index-section .item-link');
     const matchingItems = [];
     
+    // STEP 3: Check each item to see if it matches the filter
     allItems.forEach(item => {
+        // Get the data-categories attribute
+        // This contains: "Brand,Category,Tag1,Tag2"
         const categories = item.getAttribute('data-categories');
+        
+        // Check if the filter value appears anywhere in the list
+        // Example: If filterValue is "Facetune" and categories is "Facetune,Assets,Logo Kits"
+        // then .includes() returns true!
         if (categories && categories.includes(filterValue)) {
             matchingItems.push(item);
         }
@@ -118,36 +140,45 @@ function showFilteredSection(filterValue) {
     
     console.log(`Found ${matchingItems.length} items for filter: ${filterValue}`);
     
-    // Render the filtered section
+    // STEP 4: Display the matching items
     renderFilteredSection(filterValue, matchingItems);
 }
 
 /**
  * Renders the filtered section with a title and matching items
+ * ==================================================
+ * Creates a clean display of filtered results
+ * Looks like an open accordion section
+ * 
+ * @param {string} filterTitle - The filter name to display as title
+ * @param {Array} items - Array of HTML elements (the matching items)
  */
 function renderFilteredSection(filterTitle, items) {
     const filteredSection = document.getElementById('filteredSection');
     
     if (!filteredSection) return;
     
-    // Create the HTML structure (looks like an open accordion)
+    // STEP 1: Create the container HTML
+    // This creates a section that looks like an open accordion
     let html = `
         <div class="filtered-section-inner">
             <h3 class="filtered-section-title">${filterTitle}</h3>
             <div class="filtered-section-items">
     `;
     
-    // Clone each matching item
+    // STEP 2: Add each matching item
+    // We use outerHTML to copy the entire item element
     items.forEach(item => {
-        // Clone the item and add it to the filtered section
         html += item.outerHTML;
     });
     
+    // STEP 3: Close the container
     html += `
             </div>
         </div>
     `;
     
+    // STEP 4: Insert the HTML into the page
     filteredSection.innerHTML = html;
     
     console.log(`Rendered filtered section for: ${filterTitle}`);

@@ -16,7 +16,7 @@
 :root {
     /* Typography - Font Sizes (converted from design specs to rem) */
     --font-size-h1: 3.125rem;        /* 50pt - Logo */
-    --font-size-h2: 2.5rem;          /* 40pt - Section headers (Index, What's New) */
+    --font-size-h2: 2.5rem;          /* 40pt - Section headers (Index, Easy Access) */
     --font-size-h3: 2.25rem;         /* 36pt - Section titles (Presentations, Asset Libraries) */
     --font-size-button-lg: 1.5rem;   /* 24pt - Top right buttons */
     --font-size-item: 1.375rem;      /* 22pt - Items/Links */
@@ -82,14 +82,14 @@ h1:hover, .h1:hover {
     opacity: 0.7; /* Subtle hover feedback */
 }
 
-/* H2 - Section Headers (Index, What's New) */
+/* H2 - Section Headers (Index, Easy Access) */
 h2, .h2 {
     font-family: var(--font-primary); /* Aeonik/Inter */
     font-size: 1.3rem; /* 20.8pt - same as items */
     font-weight: 600; /* Semi-bold weight */
     line-height: var(--line-height);
     letter-spacing: 0.03em; /* 3% more spacing between letters */
-    padding-bottom: 10px; /* Added spacing below "Index" and "What's New" headers */
+    padding-bottom: 10px; /* Added spacing below "Index" and "Easy Access" headers */
 }
 
 /* H3 - Section Titles (Presentations, Asset Libraries, etc.) */
@@ -151,23 +151,23 @@ h3, .h3 {
 }
 
 /* Left side - 2/3 width (index-section) */
-/* Right side - 1/3 width (whats-new-section) */
+/* Right side - 1/3 width (highlight-section) */
 
-/* Reduce padding for items in What's New section */
-.whats-new-section .item-link {
+/* Reduce padding for items in Easy Access section */
+.highlight-section .item-link {
     padding: 0.75rem 0; /* Reduced from 30px to 12px top/bottom - tighter spacing */
     font-size: 1.3rem; /* Slightly larger: 20.8pt */
     font-family: var(--font-primary); /* Aeonik/Inter instead of JetBrains Mono */
 }
 
-/* What's New items have arrows same as accordion arrows */
-.whats-new-section .item-link .item-arrow {
+/* Easy Access items have arrows same as accordion arrows */
+.highlight-section .item-link .item-arrow {
     display: inline; /* Make sure arrows are visible */
     font-size: 1rem; /* Same as accordion arrows - 1rem */
 }
 
-/* Add bottom border to last item in What's New for visual consistency */
-.whats-new-section .item-link:last-child {
+/* Add bottom border to last item in Easy Access for visual consistency */
+.highlight-section .item-link:last-child {
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -374,7 +374,7 @@ body.dark-mode .dark-mode-toggle-inner {
     padding: 10px 0; /* Match section title padding for alignment */
     border-top: 1px solid var(--border-color);
     font-family: var(--font-primary); /* Aeonik/Inter instead of JetBrains Mono */
-    font-size: 1.3rem; /* 20.8pt - same as What's New items */
+    font-size: 1.3rem; /* 20.8pt - same as Easy Access items */
     color: var(--text-primary);
     text-decoration: none;
     transition: color var(--transition-fast);
@@ -437,7 +437,7 @@ body.dark-mode .dark-mode-toggle-inner {
     color: var(--button-hover-text);
 }
 
-/* Hide old arrow styling (keep for What's New section) */
+/* Hide old arrow styling (keep for Easy Access section) */
 .item-arrow {
     font-size: 1em;
 }
@@ -536,16 +536,47 @@ body.dark-mode .dark-mode-toggle-inner {
         flex-direction: column;
     }
     
-    /* Put "What's New" section first on smaller screens */
-    .whats-new-section {
+    /* Put "Easy Access" section first on smaller screens */
+    .highlight-section {
         order: -1; /* Moves to the top */
-        margin-bottom: var(--spacing-xl); /* Space below What's New */
+        margin-bottom: var(--spacing-xl); /* Space below Easy Access */
     }
     
     /* Index/Filtered section comes second */
     .index-section,
     .filtered-section {
-        order: 0; /* Default order, comes after What's New */
+        order: 0; /* Default order, comes after Easy Access */
+    }
+    
+    /* Add section titles when layout stacks (tablet and below) */
+    /* This helps users know which section they're looking at */
+    
+    /* Add "Easy Access" heading */
+    .highlight-section::before {
+        content: "Easy Access";
+        display: block;
+        font-size: 1.3rem; /* Same as h2 */
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        padding-bottom: 10px;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    /* Add "Index" heading */
+    .index-section::before {
+        content: 'Index';
+        display: block;
+        font-size: 1.3rem; /* Same as h2 */
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        padding-bottom: 10px;
+        margin-top: 0;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    /* No extra space below Easy Access section */
+    .highlight-section {
+        margin-bottom: var(--spacing-xl);
     }
 }
 
@@ -614,7 +645,7 @@ body.dark-mode .dark-mode-toggle-inner {
     .item-link,
     .accordion-title,
     .filtered-section-title,
-    .whats-new-section .item-link,
+    .highlight-section .item-link,
     .filter-button,
     .item-open-button {
         font-size: 0.8rem !important; /* 12.8px */
@@ -636,29 +667,16 @@ body.dark-mode .dark-mode-toggle-inner {
         margin-bottom: var(--spacing-md);
     }
     
-    /* Add "What's New" heading */
-    .whats-new-section::before {
-        content: "What's New";
-        display: block;
-        font-size: 0.8rem;
-        font-weight: 600;
+    /* Override section title sizes for mobile (they're already showing from tablet breakpoint) */
+    .highlight-section::before,
+    .index-section::before {
+        font-size: 0.8rem !important; /* Smaller on mobile */
         padding: 10px 0;
         margin-bottom: var(--spacing-sm);
     }
     
-    /* Add "Index" headline directly under What's New (minimal spacing) */
-    .index-section::before {
-        content: 'Index';
-        display: block;
-        font-size: 0.8rem;
-        font-weight: 600;
-        padding: 10px 0;
-        margin-top: 0; /* No extra space above */
-        margin-bottom: 0; /* No extra space below */
-    }
-    
-    /* No space below What's New section */
-    .whats-new-section {
+    /* Tighter spacing on mobile for Easy Access section */
+    .highlight-section {
         margin-bottom: 0;
     }
     
@@ -674,7 +692,7 @@ body.dark-mode .dark-mode-toggle-inner {
     
     /* Last item same height as others */
     .accordion-content .item-link:last-child,
-    .whats-new-section .item-link:last-child {
+    .highlight-section .item-link:last-child {
         padding-bottom: 10px !important; /* Ensure same padding */
     }
     
